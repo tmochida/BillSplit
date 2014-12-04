@@ -1,0 +1,14 @@
+<div class="text-center">
+    <form name="loginForm">
+        <p>Welcome</p>
+
+        <div>
+        <input type="text" placeholder="Username" ng-model="user.username" required>
+        </div>
+        <div>
+        <input type="password" placeholder="Password" ng-model="user.password" required>
+        </div>
+        <button class="btn btn-default" type="submit" ng-click="login(user)" ng-disabled="loginForm.$invalid">Submit</button>
+        <p>{{msgtxt}}</p>
+    </form>
+</div>

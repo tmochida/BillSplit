@@ -1,0 +1,23 @@
+<div class="text-center">
+    <form name="paymentForm" ng-show="!payment_started">
+        <p>Make payment</p>
+
+        <div>
+        Select store: <input type="number" placeholder="Merchant ID" ng-model="payment.merchant_ID" required>
+        </div>
+        <div>
+        Payment amount: <input type="number" min="0" placeholder="0" ng-model="payment.amount" ng-init="payment.amount=0" required>
+        </div>
+        <div>
+        Your required payment will be: {{1.01 * payment.amount}}
+        </div>
+        <button class="btn btn-default" type="submit" ng-click="startPayment(payment)" ng-disabled="paymentForm.$invalid">Initiate payment</button>
+    </form>
+    <div ng-show="payment_started">
+    <p>Payment started. Please submit payment with Destination tag set to payment ID ({{payment_ID}}).</p>
+    Payment ID: {{payment_ID}}<br />
+    Required payment amount: {{payment_amount}}<br />
+    <button ng-click="getPaidTotal(payment_ID)">Refresh total paid amount</button><br />
+    Total Paid: {{paid_total}} <br />
+    </div>
+</div>

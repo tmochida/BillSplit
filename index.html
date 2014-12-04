@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app" ng-controller="mainCtrl">
+<head>
+    <meta charset="utf-8">
+    <base href="/billsplit/">
+    
+    <title>{{titleService.title()}}</title>
+
+    <!-- CSS -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+
+    <!-- JS -->
+    <!--<script src="js/ui-bootstrap-0.11.2.min.js"></script>-->
+    <!-- AngularJS -->
+    <script src="js/angular.min.js"></script>
+    <script src="js/angular-route.min.js"></script>
+    <script src="js/angular-resource.min.js"></script>
+    <!--<script src="js/angular-animate.min.js"></script>-->
+    
+    <!-- Angular scripts -->
+    <script src="scripts/app.js"></script>
+    <script src="scripts/controllers/controllers.js"></script>
+    <script src="scripts/services/titleService.js"></script>
+    <script src="scripts/services/acctService.js"></script>
+    <script src="scripts/services/sessionService.js"></script>
+    <script src="scripts/services/paymentService.js"></script>
+    
+</head>
+<body>
+    <div ng-view></div>
+
+</body>
+</html>

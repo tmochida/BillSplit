@@ -1,0 +1,20 @@
+<div class="text-center">
+    <form name="newAcctForm">
+        <p>Create new Merchant Account</p>
+        <div>
+        Username: <input type="text" placeholder="Username" ng-model="acct.username" required>
+        </div>
+        Password: <input type="password" placeholder="Password" ng-model="acct.password" required>
+        <div>
+        Email address: <input type="email" placeholder="Email address" ng-model="acct.email" required>
+        </div>
+        <div>
+        Ripple wallet address: <input type="text" placeholder="Ripple wallet address" ng-model="acct.wallet_addr" required>
+        </div>
+        <div>
+        Merchant name: <input type="text" ng-model="acct.merchant_name" placeholder="Merchant name">
+        </div>
+
+        <button class="btn btn-default" type="submit" ng-click="createMerchant(acct)" ng-disabled="loginForm.$invalid">Submit</button>
+    </form>
+</div>
