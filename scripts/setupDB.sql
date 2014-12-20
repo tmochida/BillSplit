@@ -1,4 +1,4 @@
--- Script to set up databases for BillSplit.
+-- Creates database and tables used by BillSplit.
 
 CREATE DATABASE IF NOT EXISTS billsplit;
 
