@@ -1,14 +1,19 @@
 <div>
     <form name="loginForm" class="text-center">
         <p>Welcome</p>
-
+        
         <div>
-        <input type="text" placeholder="Username" ng-model="user.username" required>
+        Account type: <br />
+        <input type="radio" ng-model="formData.acctType" value="user" checked="checked">User
+        <input type="radio" ng-model="formData.acctType" value="merchant">Merchant<br/>
         </div>
         <div>
-        <input type="password" placeholder="Password" ng-model="user.password" required>
+        <input type="text" placeholder="Username" ng-model="formData.username" required>
         </div>
-        <button class="btn btn-default" type="submit" ng-click="login(user)" ng-disabled="loginForm.$invalid">Submit</button>
+        <div>
+        <input type="password" placeholder="Password" ng-model="formData.password" required>
+        </div>
+        <button class="btn btn-default" type="submit" ng-click="login(formData)" ng-disabled="loginForm.$invalid">Submit</button>
         <p>{{msgtxt}}</p>
     </form>
 </div>
