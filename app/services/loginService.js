@@ -1,3 +1,6 @@
+//login service.
+//CURRENTLY DEPRECATED, SHOULD USE ACCTSERVICE!!!
+
 'use strict';
 
 app.factory('loginService', function($http, $location, sessionService) {
@@ -6,13 +9,17 @@ app.factory('loginService', function($http, $location, sessionService) {
         getUserName: function() {
             return sessionService.get('username');
         },
-        login:function(user, scope) {
-            var $promise = $http.post('ops/auth/login.php', user);
+        login:function(account, scope) {
+            console.loge(account);
+            console.loge(account.acctType);
+
+            var $promise = $http.post('api/auth/login.php', account);
             $promise.then(function(response) {
                 var data = response.data;   // get returned JSON content
                 if(data.success) {
                     console.log("Login success!");
                     scope.msgtxt = "Login success!";
+                    console.log(data);
                     sessionService.set('username', data.username);
                     sessionService.set('uid', data.uid);
                     $location.path('/home');
@@ -25,7 +32,7 @@ app.factory('loginService', function($http, $location, sessionService) {
             });
         },
         loginMerch:function(user, scope) {
-            var $promise = $http.post('ops/merchant/login.php', user);
+            var $promise = $http.post('api/merchant/login.php', user);
             $promise.then(function(response) {
                 var data = response.data;   // get returned JSON content
                 if(data.success) {
@@ -48,7 +55,7 @@ app.factory('loginService', function($http, $location, sessionService) {
             $location.path('/login');
         },
         isLogged:function() {
-            var $promise = $http.post('ops/auth/verify.php');
+            var $promise = $http.post('api/auth/verify.php');
             return $promise;
         }
     }

@@ -1,3 +1,5 @@
+// Manage session variables
+
 'use strict';
 
 app.factory('sessionService', function($http) {

@@ -1,10 +1,14 @@
+// Service for access to payment backend
+
 'use strict';
 
 app.factory('paymentService', function($http, $location, acctService) {
     var payment_ID = -1;
-    var payment_amount = 5;
+    var payment_amount = 0;
     var paid_total = 0;
     
+    var paymentList = [];
+
     return {
         getPaymentID: function() {
             return payment_ID;
@@ -15,7 +19,7 @@ app.factory('paymentService', function($http, $location, acctService) {
         startPayment: function(payment, scope) {
             payment.amount *= 1.01; // apply fee
         
-            var $promise = $http.post('ops/payment/new.php', payment);
+            var $promise = $http.post('api/payment/new.php', payment);
             $promise.then(function(response) {
                 var data = response.data;   // get returned JSON content
                 if(data.success) {
@@ -51,7 +55,7 @@ app.factory('paymentService', function($http, $location, acctService) {
             });
         },
         getPayments: function(scope) {
-            var payments = $http.get('ops/merchantlistPayments.php');
+            var payments = $http.get('api/merchantlistPayments.php');
             payments.then(function(response) {
                 var data = response.data;
                 scope.payments = data.payments;

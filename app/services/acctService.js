@@ -9,40 +9,27 @@ app.factory('acctService', function($http, $location, sessionService) {
         email: function() {
             return sessionService.get('email');
         },
-        wallet_addr: function() {
-            return sessionService.get('wallet_addr');
+        isLogged:function() {
+            var $promise = $http.post('api/auth/verify.php');
+            return $promise;
         },
-        login:function(user, scope) {
-            var $promise = $http.post('ops/auth/login.php', user);
+        login:function(account, scope) {
+            var $promise = $http.post('api/auth/login.php', account);
             $promise.then(function(response) {
                 var data = response.data;   // get returned JSON content
                 if(data.success) {
                     console.log("Login success!");
-                    scope.msgtxt = "Login success!";
-                    sessionService.set('username', data.username);
-                    sessionService.set('email', data.email);
-                    sessionService.set('wallet_addr', data.wallet_addr);
                     sessionService.set('uid', data.uid);
-                    $location.path('/user/home');
-                }
-                else {
-                    console.log("Login error");
-                    scope.msgtxt = "Login failed. Please try again";
-                }
-            });
-        },
-        loginMerch:function(user, scope) {
-            var $promise = $http.post('ops/merchant/login.php', user);
-            $promise.then(function(response) {
-                var data = response.data;   // get returned JSON content
-                if(data.success) {
-                    console.log("Login success!");
-                    scope.msgtxt = "Login success!";
                     sessionService.set('username', data.username);
+                    sessionService.set('acctType', data.acctType);
                     sessionService.set('email', data.email);
-                    sessionService.set('wallet_addr', data.wallet_addr);
-                    sessionService.set('uid', data.uid);
-                    $location.path('/merchant/home');
+                    
+                    if(data.acctType == 'user') {
+                        $location.path('/user/home');
+                    }
+                    else if(data.acctType == 'merchant') {
+                        $location.path('/merchant/home');
+                    }
                 }
                 else {
                     console.log("Login error");
@@ -54,29 +41,59 @@ app.factory('acctService', function($http, $location, sessionService) {
             sessionService.destroy('username');
             sessionService.destroy('uid');
             sessionService.destroy('email');
-            sessionService.destroy('wallet_addr');
             $location.path('/login');
         },
-        isLogged:function() {
-            var $promise = $http.post('ops/auth/verify.php');
-            return $promise;
-        },
-        createUser:function(acct,scope) {
-            var $promise = $http.post('ops/account/new.php', acct);
+        create:function(account,scope) {
+            var $promise = $http.post('api/account/new.php', account);
             $promise.then(function(response) {
                 var data = response.data;   // get returned JSON content
                 if(data.success) {
-                    console.log("New individual account success");
+                    console.log("New account created");
                     $location.path('/login');
                 }
                 else {
-                    console.log("New individual account error");
+                    console.log("New account error");
                     $location.path('/home');
                 }
             });
         },
+        //not needed, should be removed.
+        loginUser:function(user, scope) {
+            var $promise = $http.post('api/auth/login.php', user);
+            $promise.then(function(response) {
+                var data = response.data;   // get returned JSON content
+                if(data.success) {
+                    console.log("Login success!");
+                    sessionService.set('username', data.username);
+                    sessionService.set('email', data.email);
+                    sessionService.set('uid', data.uid);
+                    $location.path('/user/home');
+                }
+                else {
+                    console.log("Login error");
+                    scope.msgtxt = "Login failed. Please try again";
+                }
+            });
+        },
+        loginMerch:function(user, scope) {
+            var $promise = $http.post('api/merchant/login.php', user);
+            $promise.then(function(response) {
+                var data = response.data;   // get returned JSON content
+                if(data.success) {
+                    console.log("Login success!");
+                    sessionService.set('username', data.username);
+                    sessionService.set('email', data.email);
+                    sessionService.set('uid', data.uid);
+                    $location.path('/merchant/home');
+                }
+                else {
+                    console.log("Login error");
+                    scope.msgtxt = "Login failed. Please try again";
+                }
+            });
+        },
         createMerchant:function(acct, scope) {
-            var $promise = $http.post('ops/merchant/new.php', acct);
+            var $promise = $http.post('api/merchant/new.php', acct);
             $promise.then(function(response) {
                 var data = response.data;   // get returned JSON content
                 if(data.success) {
