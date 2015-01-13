@@ -1,19 +1,24 @@
 <?php
 require("../dbconfig.php");
-
-$user = json_decode(file_get_contents('php://input'));
-$acctType = $user->acctType;
-$username = $user->username;
-$password = $user->password;
+require("../functions.php");
 
 $returnArray = [
-    'acctType' => $acctType,
-    'username' => $username,
-    'email' => "",
-    'wallet_addr' => "",
-    'uid' => "",
     'success' => false
 ];
+
+$acct = json_decode(file_get_contents('php://input'));
+
+if(!isset($acct->acctType) || !isset($acct->username) || !isset($acct->password)) {
+    printJSON($returnArray);
+    return;
+}
+
+$acctType = strip_tags(trim($acct->acctType));
+$username = strip_tags(trim($acct->username));
+$password = strip_tags(trim($acct->password));
+
+$returnArray['acctType'] = $acctType;
+$returnArray['username'] = $username;
 
 if ($acctType == "user") {
     $table_name = 'Users';
@@ -24,6 +29,9 @@ else if ($acctType == "merchant") {
 else {
     $table_name = '';
 }
+
+$username = $db->real_escape_string($username);
+$password = $db->real_escape_string($password);
 
 if (!empty($table_name)) {
     $query = "SELECT username, password, email, wallet_addr FROM " . $table_name . " WHERE username = '$username';";
@@ -45,5 +53,5 @@ if (!empty($table_name)) {
 // Close db connection
 $db->close();
 
-print json_encode($returnArray, JSON_PRETTY_PRINT);
+printJSON($returnArray);
 ?>
