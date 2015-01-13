@@ -1,18 +1,28 @@
 <?php
-require("../dbsetup.php");
-
-$payment = json_decode(file_get_contents('php://input'));
-$merchant_ID = $payment->merchant_ID;
-$amount = $payment->amount;
-$unique_id = uniqid("pymnts_", true);
-
+require("../dbconfig.php");
+require("../functions.php");
 
 $returnArray = [
-    'payment_ID' => -1,
-    'merchant_ID' => $merchant_ID,
-    'amount' => $amount,
     'success' => false
 ];
+
+$payment = json_decode(file_get_contents('php://input'));
+
+if(!isset($payment->merchant_ID) || !isset($payment->amount)) {
+    printJSON($returnArray);
+    return;
+}
+
+
+$merchant_ID = strip_tags(trim($payment->merchant_ID));
+$amount = strip_tags(trim($payment->amount));
+$unique_id = uniqid("pymnts_", true); // unique ID used to identify transaction in Payments table
+
+$returnArray['merchant_ID'] = $merchant_ID;
+$returnArray['amount'] = $amount;
+
+$merchant_ID = $db->real_escape_string($merchant_ID);
+$amount = $db->real_escape_string($amount);
 
 $query = "INSERT INTO Payments (merchant_ID, payment_amount, payment_unique_id) VALUES ('$merchant_ID', '$amount', '$unique_id')";
 
@@ -29,5 +39,5 @@ if ($db->query($query) === TRUE) {
 // Close db connection
 $db->close();
 
-print json_encode($returnArray, JSON_PRETTY_PRINT);
+printJSON($returnArray);
 ?>

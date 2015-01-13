@@ -1,25 +1,35 @@
 <?php
 require("../dbsetup.php");
+require("../functions.php");
 
-//$info = json_decode(file_get_contents('php://input'));
-//$merchant_ID = $user->merchant_ID;
-$merchant_ID = 1;
+$info = json_decode(file_get_contents('php://input'));
 
 $returnArray = [
-    'merchant_ID' => $merchant_ID,
     'payments' => [],
+    'success' => false
 ];
+
+if(isset($info->merchant_ID)) {
+    $merchant_ID = strip_tags(trim($info->merchant_ID));
+    $returnArray['merchant_ID'] = $merchant_ID;
+}
+
+$merchant_ID = $db->real_escape_string($merchant_ID);
 
 $query = "SELECT payment_ID, payment_amount, payment_complete FROM Payments WHERE merchant_ID = '$merchant_ID';";
 $result = $db->query($query);
 
 while ($row = $result->fetch_object()) {
-    $payment = array($row->payment_ID, $row->payment_amount, $row->payment_complete);
+    $payment = [
+        'id' => $row->payment_ID,
+        'amount' => $row->payment_amount,
+        'complete' => $row->payment_complete
+    ];
     array_push($returnArray['payments'], $payment);
 }
 
 // Close db connection
 $db->close();
 
-print json_encode($returnArray, JSON_PRETTY_PRINT);
+printJSON($returnArray);
 ?>

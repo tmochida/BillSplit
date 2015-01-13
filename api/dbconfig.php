@@ -1,5 +1,5 @@
 <?php
-// Configuration for database connections.
+// Configures database connections.
 // Used by /api PHP code
 
 $dbhost="localhost";
