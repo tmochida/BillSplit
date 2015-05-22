@@ -8,18 +8,20 @@ $returnArray = [
 
 $payment = json_decode(file_get_contents('php://input'));
 
-if(!isset($payment->merchant_ID) || !isset($payment->amount)) {
+if(!isset($payment->payment_ID)) {
     printJSON($returnArray);
     return;
 }
 
+$payment_ID = strip_tags(trim($payment->payment_ID));
 
-$merchant_ID = strip_tags(trim($payment->merchant_ID));
-$amount = strip_tags(trim($payment->amount));
-$unique_id = uniqid("pymnts_", true); // unique ID used to identify transaction in Payments table
+$returnArray['payment_ID'] = $merchant_ID;
 
-$returnArray['merchant_ID'] = $merchant_ID;
-$returnArray['amount'] = $amount;
+$paid_total = 0;
+
+$paymentListUrl = "https://api.ripple.com/v1/accounts/" . $hot_wallet . "/payments?destination_account=" . $hot_wallet;
+
+
 
 $merchant_ID = $db->real_escape_string($merchant_ID);
 $amount = $db->real_escape_string($amount);

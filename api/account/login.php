@@ -1,5 +1,5 @@
 <?php
-require("../dbconfig.php");
+require("../config.php");
 require("../functions.php");
 
 $returnArray = [

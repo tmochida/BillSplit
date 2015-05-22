@@ -1,5 +1,5 @@
 <?php
-// Configures database connections.
+// Configures database connections and ripple hot wallet address.
 // Used by /api PHP code
 
 $dbhost="localhost";
@@ -13,4 +13,6 @@ if ($db->connect_error) {
   die('Connection failed: ' . $db->connect_error);
 }
 
+// Ripple wallet config
+$hot_wallet="raMTQhyX2X9JkoGxZ8LBagrBLnTUSMvfgQ";
 ?>
