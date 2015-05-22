@@ -2,7 +2,8 @@
 #
 # Configures database connection and hot wallet address (used by BillSplit).
 
-echo "Please make sure you are running 'scripts/setup.sh' from the directory. If your working directory is scripts, please cd to parent directory."
+echo "Please make sure you are running 'scripts/setup.sh' from the correct directory. "
+echo "If your currnt working directory is scripts, please cd to parent directory."
 echo -ne "===============================\n"
 echo "===== Setting up database ====="
 echo "==============================="
@@ -27,11 +28,11 @@ read -p "Hot wallet address [null]: " wallet_addr
 
 wallet_addr=${wallet_addr:-null}
 
-sed -i "s/\$dbhost=.*/\$dbhost=\"$dbhost\"/g" api/config.php
-sed -i "s/\$dbname=.*/\$dbname=\"$dbname\"/g" api/config.php
-sed -i "s/\$dbuser=.*/\$dbuser=\"$dbuser\"/g" api/config.php
-sed -i "s/\$dbpass=.*/\$dbpass=\"$dbpass\"/g" api/config.php
-sed -i "s/\$hot_wallet=.*/\$hot_wallet=\"$wallet_addr\"/g" api/config.php
+sed -i "s/\$dbhost=.*/\$dbhost=\"$dbhost\";/g" api/config.php
+sed -i "s/\$dbname=.*/\$dbname=\"$dbname\";/g" api/config.php
+sed -i "s/\$dbuser=.*/\$dbuser=\"$dbuser\";/g" api/config.php
+sed -i "s/\$dbpass=.*/\$dbpass=\"$dbpass\";/g" api/config.php
+sed -i "s/\$hot_wallet=.*/\$hot_wallet=\"$wallet_addr\";/g" api/config.php
 
 echo -ne "\n\n==================================\n"
 echo "===== Configuration summary ======"
